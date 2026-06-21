@@ -1,0 +1,66 @@
+{
+  "date": "2026-03-12",
+  "expectedAttendance": 528,
+  "intervalLow": 497,
+  "intervalHigh": 557,
+  "recommendedPrep": 562,
+  "shortageProb": 0.041,
+  "largeSurplusProb": 0.12,
+  "preventableSurplus": 168,
+  "risk": "high",
+  "dataQuality": "high",
+  "modelVersion": "ssp-forecast-1.0",
+  "menu": [
+    {"item": "Chicken portions", "recommended": 548},
+    {"item": "Rice portions", "recommended": 562},
+    {"item": "Vegetable sides", "recommended": 520},
+    {"item": "Fruit cups", "recommended": 535},
+    {"item": "Packaged milk", "recommended": 555}
+  ],
+  "influences": [
+    {
+      "factor": "Grade 10 field trip",
+      "direction": "down",
+      "magnitude": 92,
+      "note": "112 students off-campus, 09:30–14:00"
+    },
+    {
+      "factor": "Early dismissal",
+      "direction": "down",
+      "magnitude": 64,
+      "note": "All grades released 12:45"
+    },
+    {
+      "factor": "Midterm examinations",
+      "direction": "down",
+      "magnitude": 38,
+      "note": "Grades 11–12 alternate schedule"
+    },
+    {
+      "factor": "Heavy rain forecast",
+      "direction": "down",
+      "magnitude": 22,
+      "note": "NWS 78% probability >1in rainfall"
+    },
+    {
+      "factor": "Popular menu: chicken & rice",
+      "direction": "up",
+      "magnitude": 14,
+      "note": "Historical participation +6.1% vs baseline"
+    },
+    {
+      "factor": "Recent attendance trend",
+      "direction": "up",
+      "magnitude": 6,
+      "note": "Trailing 14-day average rising"
+    }
+  ],
+  "similarDays": [
+    {"date": "2025-10-23", "attendance": 541, "note": "Midterms + Gr. 9 trip"},
+    {"date": "2025-12-04", "attendance": 519, "note": "Early dismissal + storm"},
+    {"date": "2026-01-29", "attendance": 552, "note": "Exams + assembly"}
+  ],
+  "approvalRequired": true,
+  "decisionStatus": "PROPOSED",
+  "safetyFloorApplied": true
+}

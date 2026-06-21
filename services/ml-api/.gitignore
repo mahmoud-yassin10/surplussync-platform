@@ -1,0 +1,21 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+.env
+data/generated/*.csv
+!data/generated/.gitkeep
+# Ignore generated model artifacts by default; allow committed production bundle
+artifacts/models/*.cbm
+!artifacts/models/attendance_point.cbm
+!artifacts/models/attendance_q10.cbm
+!artifacts/models/attendance_q90.cbm
+artifacts/models/*.json
+!artifacts/models/metadata.json

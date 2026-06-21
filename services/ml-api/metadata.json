@@ -1,0 +1,46 @@
+{
+  "modelVersion": "ssp-forecast-ml-0.1.0",
+  "metrics": {
+    "mae": 13.840329713096658,
+    "rmse": 19.713040037557906,
+    "r2": 0.6191744601230484,
+    "interval_80_coverage": 0.7898550724637681,
+    "mean_interval_width": 42.234963925545806,
+    "weekday_baseline_mae": 24.503564346883056
+  },
+  "featureNames": [
+    "weekday",
+    "month",
+    "week_of_year",
+    "enrolled",
+    "eligible",
+    "normal_prep",
+    "expected_attendance",
+    "is_exam",
+    "trip_students",
+    "early_dismissal",
+    "assembly_students",
+    "sports_students",
+    "rain_probability",
+    "rain_inches",
+    "temperature_f",
+    "menu_name",
+    "menu_popularity",
+    "recent_attendance_7d",
+    "recent_attendance_14d"
+  ],
+  "categoricalFeatures": [
+    "weekday",
+    "menu_name"
+  ],
+  "trainingRows": 551,
+  "testRows": 138,
+  "dataWindow": {
+    "start": "2023-08-21",
+    "end": "2026-06-12"
+  },
+  "pythonVersion": "3.13.5",
+  "catboostVersion": "1.2.8",
+  "scikitLearnVersion": "1.8.0",
+  "syntheticData": true
+}

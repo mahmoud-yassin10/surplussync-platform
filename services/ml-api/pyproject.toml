@@ -1,0 +1,60 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "surplussync-ml-service"
+version = "0.1.0"
+description = "Forecasting and decision-support service for SurplusSync Plus"
+readme = "README.md"
+requires-python = ">=3.13,<3.14"
+license = {text = "MIT"}
+authors = [{name = "Mahmoud Yassin"}]
+dependencies = [
+  "catboost==1.2.10",
+  "fastapi[standard]==0.138.0",
+  "joblib>=1.5,<2",
+  "numpy>=2.3,<3",
+  "pandas==3.0.3",
+  "pydantic>=2.13,<3",
+  "scikit-learn==1.9.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "httpx>=0.28,<1",
+  "mypy>=1.18,<2",
+  "pytest>=8.4,<9",
+  "pytest-cov>=7,<8",
+  "ruff>=0.14,<1",
+]
+
+[project.scripts]
+surplussync-api = "surplussync_ml.api.main:run"
+surplussync-bootstrap = "surplussync_ml.bootstrap:main"
+surplussync-generate-data = "surplussync_ml.data.synthetic:main"
+surplussync-train = "surplussync_ml.modeling.train:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/surplussync_ml"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+packages = ["surplussync_ml"]
+
+[[tool.mypy.overrides]]
+module = ["catboost.*", "sklearn.*", "pandas.*"]
+ignore_missing_imports = true

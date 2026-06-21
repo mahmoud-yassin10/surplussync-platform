@@ -1,0 +1,18 @@
+{
+  "school_id": "lhphs",
+  "date": "2026-03-12",
+  "enrolled": 820,
+  "eligible": 760,
+  "normal_prep": 730,
+  "expected_attendance": 528,
+  "is_exam": true,
+  "trip_students": 112,
+  "early_dismissal": true,
+  "rain_probability": 0.78,
+  "rain_inches": 1.08,
+  "temperature_f": 46,
+  "menu_name": "Chicken & rice",
+  "menu_popularity": 1.061,
+  "recent_attendance_7d": 708,
+  "recent_attendance_14d": 706
+}
