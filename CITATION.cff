@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+title: "SurplusSync Plus"
+message: "If you use or reference SurplusSync Plus, please cite this repository."
+type: software
+authors:
+  - family-names: "Yassin"
+    given-names: "Mahmoud"
+repository-code: "https://github.com/mahmoud-yassin10/surplussync-platform"
+url: "https://github.com/mahmoud-yassin10/surplussync-platform"
+date-released: "2026-06-22"
+version: "hackathon-snapshot"
+license: "NOASSERTION"

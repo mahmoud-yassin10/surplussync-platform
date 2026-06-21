@@ -1,0 +1,4 @@
+No unified license has been selected for the SurplusSync Plus monorepo snapshot.
+
+The imported ML service package metadata declares MIT, but the verified frontend and AI assistant snapshots do not include root license files. A project-wide license should be chosen by Mahmoud Yassin before reuse or redistribution beyond hackathon judging.
+
