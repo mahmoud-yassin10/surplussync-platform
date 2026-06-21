@@ -38,6 +38,9 @@ surplussync-train = "surplussync_ml.modeling.train:main"
 [tool.hatch.build.targets.wheel]
 packages = ["src/surplussync_ml"]
 
+[tool.vercel]
+entrypoint = "src.surplussync_ml.api.main:app"
+
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]
