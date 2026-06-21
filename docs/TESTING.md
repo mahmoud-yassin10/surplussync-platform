@@ -41,7 +41,7 @@ py -3.13 -m venv .venv
 python -m pip install -e ".[dev]"
 pytest
 ruff check .
-mypy
+mypy src
 python -m surplussync_ml.bootstrap
 ```
 
