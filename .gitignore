@@ -1,6 +1,7 @@
 .env
 .env.local
 *.local
+.vercel/
 node_modules/
 **/node_modules/
 .venv/
@@ -27,4 +28,3 @@ Thumbs.db
 .vscode/
 *.pid
 scripts/.surplussync-pids.json
-
