@@ -1,8 +1,8 @@
-import type { CopilotExplanationDraft } from "./copilotResponseAssembler";
+import type { CopilotExplanationDraft } from "./copilotResponseAssembler.js";
 import {
   CANONICAL_INTERVAL_BASELINE,
   CANONICAL_INTERVAL_CORRECTED,
-} from "./canonicalMlFeatures";
+} from "./canonicalMlFeatures.js";
 import {
   BASELINE_ATTENDANCE,
   BASELINE_RECOMMENDED_PREP,
@@ -13,9 +13,9 @@ import {
   CURRENT_PLAN,
   PREVENTABLE_SURPLUS_BASELINE,
   PREVENTABLE_SURPLUS_CORRECTED,
-} from "./demoConstants";
-import { BANNED_TOOLS } from "./toolRegistry";
-import { EvidenceItemSchema, ProvenanceItemSchema } from "./schemas";
+} from "./demoConstants.js";
+import { BANNED_TOOLS } from "./toolRegistry.js";
+import { EvidenceItemSchema, ProvenanceItemSchema } from "./schemas.js";
 import type { z } from "zod";
 
 type EvidenceItem = z.infer<typeof EvidenceItemSchema>;

@@ -1,15 +1,15 @@
 import { GoogleGenAI } from "@google/genai";
-import { UserRole } from "../types";
-import { assembleCopilotResponse } from "./copilotResponseAssembler";
-import { CopilotExplanationDraftSchema } from "./copilotResponseAssembler";
-import { ForecastProvider } from "./forecastProvider";
-import { buildMockExplanation, planMockTools } from "./mockToolPlanner";
-import { getSession } from "./sessionStore";
+import { UserRole } from "../types.js";
+import { assembleCopilotResponse } from "./copilotResponseAssembler.js";
+import { CopilotExplanationDraftSchema } from "./copilotResponseAssembler.js";
+import { ForecastProvider } from "./forecastProvider.js";
+import { buildMockExplanation, planMockTools } from "./mockToolPlanner.js";
+import { getSession } from "./sessionStore.js";
 import {
   EXPLANATION_RESPONSE_SCHEMA,
   runControlledToolLoop,
   ToolLoopOptions,
-} from "./toolLoop";
+} from "./toolLoop.js";
 import { FunctionCall } from "@google/genai";
 
 export interface CopilotTurnResult {

@@ -1,13 +1,13 @@
 import { randomUUID } from "crypto";
-import { UserRole } from "../types";
+import { UserRole } from "../types.js";
 import {
   ActionType,
   canApproveAction,
   canProposeAction,
   deriveRequiredApprovals,
   isActionType,
-} from "./actionPolicy";
-import { computeExpectedConsequences } from "./computeConsequences";
+} from "./actionPolicy.js";
+import { computeExpectedConsequences } from "./computeConsequences.js";
 import {
   BASELINE_ATTENDANCE,
   CORRECTED_ATTENDANCE,
@@ -17,7 +17,7 @@ import {
   PREVENTABLE_SURPLUS_CORRECTED,
   PROPOSAL_TTL_MS,
   SAFETY_FLOOR,
-} from "./demoConstants";
+} from "./demoConstants.js";
 import {
   AIActionProposalSchema,
   AlertCancellationAfterSchema,
@@ -28,8 +28,8 @@ import {
   SanitizedProposal,
   SurplusAlertAfterSchema,
   UserRoleSchema,
-} from "./schemas";
-import type { SessionSnapshot } from "./sessionStore";
+} from "./schemas.js";
+import type { SessionSnapshot } from "./sessionStore.js";
 
 export interface ProposalValidationResult {
   accepted: SanitizedProposal[];

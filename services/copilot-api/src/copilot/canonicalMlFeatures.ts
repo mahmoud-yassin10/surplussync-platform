@@ -9,9 +9,9 @@ import {
   FOCUS_DATE,
   PREVENTABLE_SURPLUS_BASELINE,
   PREVENTABLE_SURPLUS_CORRECTED,
-} from "./demoConstants";
-import type { MlForecastFeaturesInput } from "./mlSchemas";
-import type { MlForecastResponse } from "./mlSchemas";
+} from "./demoConstants.js";
+import type { MlForecastFeaturesInput } from "./mlSchemas.js";
+import type { MlForecastResponse } from "./mlSchemas.js";
 
 export const CANONICAL_SCHOOL_ID = "lhphs";
 

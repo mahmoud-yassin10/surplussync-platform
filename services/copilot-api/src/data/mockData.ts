@@ -1,4 +1,4 @@
-import { SchoolDetails, SchoolForecast, RecoveryPartner, AuditEntry, AIActionProposal } from "../types";
+import { SchoolDetails, SchoolForecast, RecoveryPartner, AuditEntry, AIActionProposal } from "../types.js";
 
 export const INITIAL_SCHOOL: SchoolDetails = {
   id: "lincoln-heights",

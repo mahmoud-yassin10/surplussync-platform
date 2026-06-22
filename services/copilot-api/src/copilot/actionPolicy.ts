@@ -1,4 +1,4 @@
-import { UserRole } from "../types";
+import { UserRole } from "../types.js";
 
 export const ACTION_TYPES = [
   "ATTENDANCE_UPDATE",

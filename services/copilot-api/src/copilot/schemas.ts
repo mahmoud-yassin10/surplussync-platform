@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ACTION_TYPES } from "./actionPolicy";
+import { ACTION_TYPES } from "./actionPolicy.js";
 import {
   BASELINE_ATTENDANCE,
   BASELINE_RECOMMENDED_PREP,
@@ -7,7 +7,7 @@ import {
   CORRECTED_RECOMMENDED_PREP,
   CURRENT_PLAN,
   SAFETY_FLOOR,
-} from "./demoConstants";
+} from "./demoConstants.js";
 
 export const UserRoleSchema = z.enum([
   "CAFETERIA_MANAGER",

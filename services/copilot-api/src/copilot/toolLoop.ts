@@ -5,18 +5,18 @@ import {
   GoogleGenAI,
   Type,
 } from "@google/genai";
-import { UserRole } from "../types";
-import { getSession } from "./sessionStore";
-import { ForecastProvider } from "./forecastProvider";
+import { UserRole } from "../types.js";
+import { getSession } from "./sessionStore.js";
+import { ForecastProvider } from "./forecastProvider.js";
 import {
   AllowedToolName,
   BANNED_TOOLS,
   isAllowedTool,
   isBannedTool,
   TOOL_DECLARATIONS,
-} from "./toolRegistry";
-import { executeTool, ToolExecutionContext, ToolExecutionResult } from "./toolExecutors";
-import { TOOL_LOOP_SYSTEM_PROMPT } from "./systemPrompt";
+} from "./toolRegistry.js";
+import { executeTool, ToolExecutionContext, ToolExecutionResult } from "./toolExecutors.js";
+import { TOOL_LOOP_SYSTEM_PROMPT } from "./systemPrompt.js";
 
 export const MAX_TOOL_LOOP_ITERATIONS = 5;
 export const MAX_IDENTICAL_TOOL_CALLS = 2;

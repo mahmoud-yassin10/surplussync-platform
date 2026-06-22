@@ -1,4 +1,4 @@
-import { getMainAppServiceToken } from "./integrationConfig";
+import { getMainAppServiceToken } from "./integrationConfig.js";
 
 export type IntegrationAuthResult =
   | { ok: true }

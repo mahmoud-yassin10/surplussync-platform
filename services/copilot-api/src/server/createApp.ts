@@ -1,15 +1,15 @@
 import express, { Express, Request, Response } from "express";
 import { GoogleGenAI } from "@google/genai";
 import { FunctionCall } from "@google/genai";
-import { runCopilotTurn } from "../copilot/geminiRunner";
-import { ForecastProvider } from "../copilot/forecastProvider";
+import { runCopilotTurn } from "../copilot/geminiRunner.js";
+import { ForecastProvider } from "../copilot/forecastProvider.js";
 import {
   AuditAmendmentRequestSchema,
   CopilotRequestSchema,
   CreateSessionRequestSchema,
   PartnerSelectionRequestSchema,
   UpdateSessionRoleSchema,
-} from "../copilot/schemas";
+} from "../copilot/schemas.js";
 import {
   appendAuditAmendment,
   approveProposal,
@@ -22,13 +22,13 @@ import {
   hydratePersistedSession,
   rejectProposal,
   updateSessionRole,
-} from "../copilot/sessionStore";
-import { resolveSessionPersistence, SessionPersistence } from "../copilot/sessionPersistence";
-import { authorizeMainAppService } from "../copilot/integrationAuth";
-import { reconcileSessionFromMainApp } from "../copilot/reconcileSessionFromMainApp";
-import { validateReconciliationRequest } from "../copilot/reconciliationSchemas";
-import { UserRole } from "../types";
-import type { MlFetchFn } from "../copilot/forecastProvider";
+} from "../copilot/sessionStore.js";
+import { resolveSessionPersistence, SessionPersistence } from "../copilot/sessionPersistence.js";
+import { authorizeMainAppService } from "../copilot/integrationAuth.js";
+import { reconcileSessionFromMainApp } from "../copilot/reconcileSessionFromMainApp.js";
+import { validateReconciliationRequest } from "../copilot/reconciliationSchemas.js";
+import { UserRole } from "../types.js";
+import type { MlFetchFn } from "../copilot/forecastProvider.js";
 
 export interface LabAppOptions {
   isProduction?: boolean;

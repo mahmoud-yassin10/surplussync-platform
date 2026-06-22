@@ -1,4 +1,4 @@
-import { AuditEntry } from "../types";
+import { AuditEntry } from "../types.js";
 import {
   BASELINE_ATTENDANCE,
   BASELINE_RECOMMENDED_PREP,
@@ -7,8 +7,8 @@ import {
   CURRENT_PLAN,
   PREVENTABLE_SURPLUS_BASELINE,
   PREVENTABLE_SURPLUS_CORRECTED,
-} from "./demoConstants";
-import type { ReconciliationRequest } from "./reconciliationSchemas";
+} from "./demoConstants.js";
+import type { ReconciliationRequest } from "./reconciliationSchemas.js";
 import {
   DEFAULT_PARTNER_PREREQUISITES,
   getSession,
@@ -16,7 +16,7 @@ import {
   type AlertStatus,
   type PartnerPrerequisites,
   type SessionSnapshot,
-} from "./sessionStore";
+} from "./sessionStore.js";
 
 export interface ReconcileResult {
   ok: boolean;

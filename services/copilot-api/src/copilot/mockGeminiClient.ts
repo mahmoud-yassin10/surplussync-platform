@@ -1,5 +1,5 @@
-import { StructuredCopilotResponse, UserRole, AIActionProposal } from "../types";
-import { checkPermission } from "./permissionPolicy";
+import { StructuredCopilotResponse, UserRole, AIActionProposal } from "../types.js";
+import { checkPermission } from "./permissionPolicy.js";
 
 /**
  * Deterministically generates high-fidelity mocking for the 10 scenario guides

@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { UserRole } from "../types";
+import { UserRole } from "../types.js";
 import {
   BASELINE_ATTENDANCE,
   BASELINE_RECOMMENDED_PREP,
   CORRECTED_ATTENDANCE,
   CORRECTED_RECOMMENDED_PREP,
-} from "./demoConstants";
+} from "./demoConstants.js";
 
 const ReconciliationRoleSchema = z.enum([
   UserRole.CAFETERIA_MANAGER,

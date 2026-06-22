@@ -6,8 +6,8 @@ import {
   CURRENT_PLAN,
   FOCUS_DATE,
   SAFETY_FLOOR,
-} from "./demoConstants";
-import { ActionType } from "./actionPolicy";
+} from "./demoConstants.js";
+import { ActionType } from "./actionPolicy.js";
 
 export function computeExpectedConsequences(
   actionType: ActionType,

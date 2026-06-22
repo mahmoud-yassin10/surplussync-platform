@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { SAFETY_FLOOR } from "./demoConstants";
+import { SAFETY_FLOOR } from "./demoConstants.js";
 
 export const ReadOperationalStateArgsSchema = z.object({}).strict();
 

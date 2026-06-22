@@ -1,5 +1,5 @@
 import { Redis } from "@upstash/redis";
-import type { PersistedLabSession } from "./sessionStore";
+import type { PersistedLabSession } from "./sessionStore.js";
 
 export type SessionPersistenceMode = "memory" | "redis";
 

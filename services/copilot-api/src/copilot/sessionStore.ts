@@ -5,14 +5,14 @@ import {
   SchoolDetails,
   SchoolForecast,
   UserRole,
-} from "../types";
+} from "../types.js";
 import {
   INITIAL_AUDIT_LOGS,
   INITIAL_FORECAST,
   INITIAL_PARTNERS,
   INITIAL_SCHOOL,
-} from "../data/mockData";
-import { FOCUS_DATE } from "./demoConstants";
+} from "../data/mockData.js";
+import { FOCUS_DATE } from "./demoConstants.js";
 import {
   attendanceExecutionPatch,
   buildPartnerSelectionDraft,
@@ -21,8 +21,8 @@ import {
   PARTNER_SELECTION_PROPOSAL_STALE,
   sanitizeProposals,
   validateProposalForExecution,
-} from "./proposalValidator";
-import { SanitizedProposal } from "./schemas";
+} from "./proposalValidator.js";
+import { SanitizedProposal } from "./schemas.js";
 
 export type AlertStatus = "DRAFT" | "SENT_PROVISIONAL" | "NONE";
 

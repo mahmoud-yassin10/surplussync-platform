@@ -1,12 +1,12 @@
-import { UserRole } from "../types";
-import { checkPermission } from "./permissionPolicy";
+import { UserRole } from "../types.js";
+import { checkPermission } from "./permissionPolicy.js";
 import {
   RawCopilotResponseSchema,
   StructuredCopilotResponseSchema,
   SanitizedProposal,
-} from "./schemas";
-import { sanitizeProposals } from "./proposalValidator";
-import { addSanitizedProposals, getSession, SessionSnapshot } from "./sessionStore";
+} from "./schemas.js";
+import { sanitizeProposals } from "./proposalValidator.js";
+import { addSanitizedProposals, getSession, SessionSnapshot } from "./sessionStore.js";
 
 export interface ProcessedCopilotResponse {
   response: ReturnType<typeof StructuredCopilotResponseSchema.parse>;

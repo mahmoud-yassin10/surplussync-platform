@@ -6,15 +6,15 @@ import {
   buildCanonicalWhatIfTripCancelledFallback,
   validateCanonicalForecastInvariants,
   validateCanonicalWhatIfInvariants,
-} from "./canonicalMlFeatures";
-import { getMlConfig, type MlConfig } from "./mlConfig";
+} from "./canonicalMlFeatures.js";
+import { getMlConfig, type MlConfig } from "./mlConfig.js";
 import {
   ForecastProvenance,
   mlForecastResponseSchema,
   mlHealthResponseSchema,
   mlWhatIfRequestSchema,
   type MlForecastResponse,
-} from "./mlSchemas";
+} from "./mlSchemas.js";
 
 export class ForecastProviderError extends Error {
   constructor(
@@ -150,7 +150,7 @@ export class ForecastProvider {
 
   async getAttendanceForecast(scope?: { schoolId?: string; date?: string }): Promise<ForecastResult> {
     if (scope?.schoolId || scope?.date) {
-      const { isCanonicalDemoScope } = await import("./canonicalMlFeatures");
+      const { isCanonicalDemoScope } = await import("./canonicalMlFeatures.js");
       if (!isCanonicalDemoScope(scope)) {
         throw new ForecastProviderError(
           "UNSUPPORTED_DEMO_SCOPE",
@@ -198,7 +198,7 @@ export class ForecastProvider {
     date?: string;
   }): Promise<ForecastResult> {
     if (scope?.schoolId || scope?.date) {
-      const { isCanonicalDemoScope } = await import("./canonicalMlFeatures");
+      const { isCanonicalDemoScope } = await import("./canonicalMlFeatures.js");
       if (!isCanonicalDemoScope(scope)) {
         throw new ForecastProviderError(
           "UNSUPPORTED_DEMO_SCOPE",

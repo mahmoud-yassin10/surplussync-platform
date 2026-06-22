@@ -1,14 +1,14 @@
-import { UserRole } from "../types";
+import { UserRole } from "../types.js";
 import {
   BASELINE_ATTENDANCE,
   BASELINE_RECOMMENDED_PREP,
   CORRECTED_ATTENDANCE,
   CORRECTED_RECOMMENDED_PREP,
   FOCUS_DATE,
-} from "./demoConstants";
-import { ForecastProvider, ForecastProviderError } from "./forecastProvider";
-import { checkPermission } from "./permissionPolicy";
-import { sanitizeProposals } from "./proposalValidator";
+} from "./demoConstants.js";
+import { ForecastProvider, ForecastProviderError } from "./forecastProvider.js";
+import { checkPermission } from "./permissionPolicy.js";
+import { sanitizeProposals } from "./proposalValidator.js";
 import {
   GetAttendanceForecastArgsSchema,
   ListRecoveryPartnersArgsSchema,
@@ -20,12 +20,12 @@ import {
   ReadAuditStorylineArgsSchema,
   ReadOperationalStateArgsSchema,
   SimulateAttendanceCorrectionArgsSchema,
-} from "./toolArgumentSchemas";
-import { AllowedToolName } from "./toolRegistry";
-import type { ForecastProvenance } from "./mlSchemas";
-import { addSanitizedProposals, getSession, SessionSnapshot } from "./sessionStore";
-import type { SanitizedProposal } from "./schemas";
-import type { ToolCallDetails } from "../types";
+} from "./toolArgumentSchemas.js";
+import { AllowedToolName } from "./toolRegistry.js";
+import type { ForecastProvenance } from "./mlSchemas.js";
+import { addSanitizedProposals, getSession, SessionSnapshot } from "./sessionStore.js";
+import type { SanitizedProposal } from "./schemas.js";
+import type { ToolCallDetails } from "../types.js";
 
 export interface ToolExecutionContext {
   sessionId: string;

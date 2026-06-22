@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { AnswerTypeSchema, EvidenceItemSchema, ProvenanceItemSchema, TransparencyUncertaintySchema } from "./schemas";
-import type { ToolCallDetails } from "../types";
-import { StructuredCopilotResponseSchema, type SanitizedProposal } from "./schemas";
-import { getSession } from "./sessionStore";
+import { AnswerTypeSchema, EvidenceItemSchema, ProvenanceItemSchema, TransparencyUncertaintySchema } from "./schemas.js";
+import type { ToolCallDetails } from "../types.js";
+import { StructuredCopilotResponseSchema, type SanitizedProposal } from "./schemas.js";
+import { getSession } from "./sessionStore.js";
 
 export const CopilotExplanationDraftSchema = z.object({
   answer: z.string(),
