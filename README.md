@@ -150,6 +150,55 @@ Root `.env.example` documents local defaults for all services. `GEMINI_API_KEY` 
 
 No server secret uses a `VITE_` prefix.
 
+For durable Copilot sessions on Vercel, configure `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` in the Copilot project. Local development and CI use in-memory session fallback when Redis is absent. Redis, Gemini, and service-token secrets must never be exposed to browser code.
+
+## Vercel Deployment
+
+Deploy this monorepo as three Vercel projects:
+
+### Frontend Project
+
+Root directory: `apps/web`
+
+```env
+ML_SERVICE_URL=https://YOUR-ML-PROJECT.vercel.app
+ML_REQUEST_TIMEOUT_MS=8000
+ALLOW_FORECAST_FALLBACK=true
+
+COPILOT_SERVICE_URL=https://YOUR-COPILOT-PROJECT.vercel.app
+COPILOT_SERVICE_TOKEN=GENERATE_A_STRONG_RANDOM_VALUE
+COPILOT_REQUEST_TIMEOUT_MS=10000
+COPILOT_ALLOW_FORECAST_FALLBACK=true
+MAIN_APP_SERVICE_TOKEN=GENERATE_A_SECOND_STRONG_RANDOM_VALUE
+```
+
+`COPILOT_SERVICE_TOKEN` is read only by the frontend server gateway and sent as the bearer token to the Copilot API. It must exactly match the Copilot project's `MAIN_APP_SERVICE_TOKEN`. The frontend project's `MAIN_APP_SERVICE_TOKEN` is only used for local script parity and should not be exposed to the browser.
+
+### ML Project
+
+Root directory: `services/ml-api`
+
+```env
+ALLOW_DEMO_FIXTURE=true
+```
+
+### Copilot Project
+
+Root directory: `services/copilot-api`
+
+```env
+NODE_ENV=production
+ML_SERVICE_URL=https://YOUR-ML-PROJECT.vercel.app
+COPILOT_ALLOW_FORECAST_FALLBACK=true
+MAIN_APP_SERVICE_TOKEN=THE_VALUE_SENT_BY_FRONTEND_COPILOT_SERVICE_TOKEN
+UPSTASH_REDIS_REST_URL=YOUR_UPSTASH_URL
+UPSTASH_REDIS_REST_TOKEN=YOUR_UPSTASH_TOKEN
+COPILOT_SESSION_TTL_SECONDS=86400
+GEMINI_API_KEY=
+```
+
+`GEMINI_API_KEY` remains optional. Without it, deterministic language fallback is used.
+
 ## Canonical Demo
 
 School: Lincoln Heights Public High School  

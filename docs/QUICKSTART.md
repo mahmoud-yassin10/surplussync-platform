@@ -23,6 +23,8 @@ Copy-Item .env.example .env
 
 `GEMINI_API_KEY` is optional. Without it, the AI assistant uses deterministic language fallback.
 
+`UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` are optional locally. Without them, Copilot sessions use in-memory fallback. Configure Redis for durable Copilot sessions on Vercel.
+
 ## Windows Startup
 
 ```powershell
@@ -45,6 +47,8 @@ cd ..\..
 .\scripts\start.ps1
 .\scripts\verify.ps1
 ```
+
+`start.ps1` requires ports `8000`, `3001`, and `3000` to be free. It fails before launching partial services if any required port is already occupied.
 
 ## Linux/macOS Startup
 

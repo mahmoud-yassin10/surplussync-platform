@@ -4,6 +4,8 @@
 
 ML expects `8000`, assistant expects `3001`, and the frontend normally starts on `3000`. Stop only known SurplusSync processes or use the printed Vite URL.
 
+The root `scripts/start.ps1` now uses strict ports and fails before launch if `8000`, `3001`, or `3000` is occupied. It prints the owning process so you can decide whether it is safe to stop.
+
 ## ML Model Not Loaded
 
 Confirm committed model artifacts exist in `services/ml-api/artifacts/models`. Reinstall ML dependencies and run `python -m surplussync_ml.bootstrap`.
@@ -15,6 +17,10 @@ Check `services/copilot-api`, run `npm ci`, and start with `PORT=3001`. The fron
 ## Missing Gemini Key
 
 Expected for local demos. `GEMINI_API_KEY` is optional.
+
+## Missing Redis Variables
+
+Expected for local demos and CI. Without `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`, the Copilot uses in-memory sessions and `/health` reports `sessionPersistence: "memory"`. Configure Upstash Redis on Vercel for durable sessions.
 
 ## Stale Session
 
