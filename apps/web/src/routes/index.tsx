@@ -447,7 +447,7 @@ function PlanComparison({
             label={`${current} current plan`}
           />
           <span
-            className="absolute top-[78px] -translate-x-1/2 rounded-full bg-white/85 px-2 py-0.5 text-[10px] text-[var(--color-text-soft)] shadow-sm tnum"
+            className="absolute top-[30px] -translate-x-1/2 rounded-full bg-white/85 px-2 py-0.5 text-[10px] text-[var(--color-text-soft)] shadow-sm tnum"
             style={{ left: pct(540) }}
           >
             540 safety floor

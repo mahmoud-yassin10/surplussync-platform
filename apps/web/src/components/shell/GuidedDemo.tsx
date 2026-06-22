@@ -1,5 +1,6 @@
 import { Play, X } from "lucide-react";
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useStore } from "../../lib/store";
 import { useNavigate } from "@tanstack/react-router";
 
@@ -75,20 +76,9 @@ export function GuidedDemo() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.guidedStep]);
 
-  return (
-    <>
-      <button
-        onClick={() => dispatch({ type: "GUIDED_STEP", step: 1 })}
-        className="press text-[11px] flex items-center gap-1 px-2 py-1 rounded-md bg-[var(--color-ink)] text-white hover:opacity-90"
-      >
-        <Play size={11} /> Start guided demo
-      </button>
-
-      {active && step && (
-        <div
-          key={state.guidedStep}
-          className="guided-demo-toast animate-rise"
-        >
+  const toast =
+    active && step ? (
+      <div key={state.guidedStep} className="guided-demo-toast animate-rise">
           <div className="px-4 py-2.5 border-b border-[var(--color-line)] flex items-center bg-[var(--color-ink)] text-white">
             <div className="text-[10.5px] uppercase tracking-[0.16em] opacity-70">
               Guided demo · step {state.guidedStep} of {STEPS.length}
@@ -128,8 +118,19 @@ export function GuidedDemo() {
               {state.guidedStep === STEPS.length ? "Finish" : step.action ? "Run step" : "Continue"}
             </button>
           </div>
-        </div>
-      )}
+      </div>
+    ) : null;
+
+  return (
+    <>
+      <button
+        onClick={() => dispatch({ type: "GUIDED_STEP", step: 1 })}
+        className="press text-[11px] flex items-center gap-1 px-2 py-1 rounded-md bg-[var(--color-ink)] text-white hover:opacity-90"
+      >
+        <Play size={11} /> Start guided demo
+      </button>
+
+      {toast && typeof document !== "undefined" ? createPortal(toast, document.body) : null}
     </>
   );
 }
