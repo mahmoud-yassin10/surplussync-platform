@@ -20,8 +20,8 @@ $frontend = "http://127.0.0.1:3000"
 
 Write-Host "Checking ML health..."
 $health = Invoke-RestMethod "$ml/health"
-if (-not ($health.status -eq "ok" -or $health.model_loaded -eq $true)) {
-  throw "ML health did not report ready/model loaded"
+if ($health.status -ne "ok" -or $health.modelLoaded -ne $true) {
+  throw "ML health did not report status ok with modelLoaded=true"
 }
 
 $baseline = Invoke-JsonPost "$ml/v1/forecast" (Join-Path $Root "services/ml-api/examples/canonical_request.json")
@@ -39,14 +39,17 @@ Assert-Equal $whatIf.recommendedPrep 575 "what-if recommendedPrep"
 Assert-Equal $whatIf.preventableSurplus 155 "what-if preventableSurplus"
 
 Write-Host "Checking Copilot health..."
-Invoke-RestMethod "$copilot/health" | Out-Null
+$copilotHealth = Invoke-RestMethod "$copilot/health"
+if ($copilotHealth.status -ne "ok") {
+  throw "Copilot health did not report ok"
+}
+Write-Host "Copilot persistence mode: $($copilotHealth.sessionPersistence)"
 
 Write-Host "Checking frontend forecast health..."
-try {
-  Invoke-RestMethod "$frontend/api/forecast/health" | Out-Null
-} catch {
-  Write-Host "Frontend health check failed on :3000. If Vite selected another port, verify using the printed Vite URL."
-  throw
+$frontendHealth = Invoke-RestMethod "$frontend/api/forecast/health"
+if ($frontendHealth.mlServiceReachable -ne $true -or $frontendHealth.mlModelLoaded -ne $true) {
+  throw "Frontend forecast health is not using live ML"
 }
+Write-Host "Frontend forecast health: $($frontendHealth.status), live ML reachable: $($frontendHealth.mlServiceReachable), fallback enabled: $($frontendHealth.fallbackEnabled)"
 
 Write-Host "Canonical verification passed with live ML values."
