@@ -118,6 +118,7 @@ function SidebarNav({
 export function AppShell({ children }: { children: ReactNode }) {
   const { state, dispatch } = useStore();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isRoutePending = useRouterState({ select: (s) => s.status === "pending" });
   const [copilotOpen, setCopilotOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const items = NAV.filter((n) => n.roles.includes(state.role));
@@ -283,10 +284,13 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </header>
 
-        <main className="flex-1 min-w-0">
-          <div key={pathname} className="animate-fade">
+        <main className="relative flex-1 min-w-0">
+          <div aria-busy={isRoutePending}>
             {children}
           </div>
+          {isRoutePending && (
+            <div className="pointer-events-none absolute inset-0 z-10 bg-[var(--color-canvas)]/80 backdrop-blur-[1px]" />
+          )}
         </main>
       </div>
 
