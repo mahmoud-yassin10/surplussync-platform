@@ -11,7 +11,7 @@ const STEPS: {
 }[] = [
   {
     title: "Open the Command Center",
-    description: "Thursday is flagged as High risk surplus event.",
+    description: "Today is flagged as a high-risk surplus event.",
     to: "/",
   },
   {
@@ -87,7 +87,7 @@ export function GuidedDemo() {
       {active && step && (
         <div
           key={state.guidedStep}
-          className="animate-rise fixed bottom-[max(2rem,env(safe-area-inset-bottom))] right-5 z-[var(--z-toast)] w-[340px] max-w-[calc(100vw-2.5rem)] rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] shadow-xl overflow-hidden"
+          className="guided-demo-toast animate-rise"
         >
           <div className="px-4 py-2.5 border-b border-[var(--color-line)] flex items-center bg-[var(--color-ink)] text-white">
             <div className="text-[10.5px] uppercase tracking-[0.16em] opacity-70">

@@ -160,7 +160,7 @@ export async function gatewayGetForecast(
   try {
     const { data } = await postMlForecast(features);
     return {
-      forecast: mlResponseToForecast(data),
+      forecast: { ...mlResponseToForecast(data), date: canonical ? date : data.date },
       provenance: buildProvenance("ml", { mlReachable: true, fallbackUsed: false }),
     };
   } catch (error) {
@@ -187,7 +187,7 @@ export async function gatewayGetAttendanceWhatIf(
 
   try {
     const { data } = await postMlWhatIf(base, changes);
-    let forecast = mlResponseToForecast(data);
+    let forecast = { ...mlResponseToForecast(data), date: canonical ? date : data.date };
     if (canonical) {
       forecast = {
         ...forecast,

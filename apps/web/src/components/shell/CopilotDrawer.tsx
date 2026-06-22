@@ -25,7 +25,7 @@ import { buildReconciliationSnapshot } from "../../lib/copilot-snapshot";
 import { useStore } from "../../lib/store";
 
 const PROMPTS = [
-  "Why is Thursday high risk?",
+  "Why is today high risk?",
   "What happens if attendance is 540?",
   "Which inputs influenced the prediction?",
   "Compare this with similar exam days.",
@@ -229,7 +229,7 @@ export function CopilotDrawer({ open, onClose }: { open: boolean; onClose: () =>
         {thread.length === 0 && (
           <div className="space-y-3">
             <p className="text-[12px] text-[var(--color-text-soft)] leading-relaxed">
-              Ask about Thursday's forecast, simulate changes, or draft an action. The Copilot will
+              Ask about today's forecast, simulate changes, or draft an action. The Copilot will
               explain its evidence and request approval for anything consequential.
             </p>
             <div className="space-y-1.5">

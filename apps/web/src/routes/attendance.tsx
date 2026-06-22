@@ -88,7 +88,7 @@ function Attendance() {
             who="Cafeteria Manager or School Administrator"
             before={`Expected ${state.forecast.expectedAttendance} students (model baseline)`}
             after="Expected 540 students (trip cancelled)"
-            consequences={`Recalculates Thursday forecast: recommended prep ${state.attendanceCorrected ? 575 : state.forecast.recommendedPrep} → 575 meals. Attendance records updated.`}
+            consequences={`Recalculates today's forecast: recommended prep ${state.attendanceCorrected ? 575 : state.forecast.recommendedPrep} → 575 meals. Attendance records updated.`}
             risks={
               state.attendanceCorrected
                 ? undefined

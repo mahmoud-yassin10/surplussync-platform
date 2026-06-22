@@ -6,16 +6,17 @@ import type { MlForecastFeaturesInput } from "../lib/forecast-gateway-types";
 import { mlForecastFeaturesInputSchema } from "../lib/forecast-gateway-types";
 
 export const CANONICAL_SCHOOL_ID = "lhphs";
+const ML_CANONICAL_SCENARIO_DATE = "2026-03-12";
 
 export function isCanonicalForecastRequest(date: string, schoolId: string): boolean {
   return date === DEMO_FOCUS_DATE && schoolId === CANONICAL_SCHOOL_ID;
 }
 
-/** Locked canonical ML feature payload for Thursday Mar 12, 2026. */
+/** Locked canonical ML feature payload; displayed in-app as the current demo focus day. */
 export function canonicalMlFeatures(schoolId = CANONICAL_SCHOOL_ID): MlForecastFeaturesInput {
   return mlForecastFeaturesInputSchema.parse({
     school_id: schoolId,
-    date: DEMO_FOCUS_DATE,
+    date: ML_CANONICAL_SCENARIO_DATE,
     enrolled: 820,
     eligible: 760,
     normal_prep: 730,

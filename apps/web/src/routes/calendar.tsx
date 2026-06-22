@@ -19,20 +19,20 @@ export const Route = createFileRoute("/calendar")({
 });
 
 function CalendarPage() {
-  // build month grid for March 2026
-  const month = 2;
+  // Build month grid for June 2026.
+  const month = 5;
   const year = 2026;
   const first = new Date(Date.UTC(year, month, 1));
   const startWeekday = first.getUTCDay();
-  const daysInMonth = 31;
+  const daysInMonth = 30;
   const cells: ({ date: string; day: number } | null)[] = [];
   for (let i = 0; i < startWeekday; i++) cells.push(null);
   for (let d = 1; d <= daysInMonth; d++) {
-    cells.push({ date: `2026-03-${String(d).padStart(2, "0")}`, day: d });
+    cells.push({ date: `2026-06-${String(d).padStart(2, "0")}`, day: d });
   }
 
   return (
-    <Page kicker="School calendar" title="March 2026">
+    <Page kicker="School calendar" title="June 2026">
       <div className="grid lg:grid-cols-[1.6fr_1fr] gap-5">
         <Section
           title="Month view"

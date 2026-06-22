@@ -293,7 +293,7 @@ export function reducer(state: State, action: Action): State {
             fromRole: "manager",
             fromName: "Lincoln Heights HS",
             kind: "alert",
-            body: `Provisional surplus alert for Thursday ${formatFocusDateSlash()}. Estimated 60–95 packaged meals. Not yet a confirmed donation — please reserve tentative capacity.`,
+            body: `Provisional surplus alert for today, ${formatFocusDateSlash()}. Estimated 60–95 packaged meals. Not yet a confirmed donation — please reserve tentative capacity.`,
             meta: { range: "60–95", category: "packaged" },
           },
         ];

@@ -268,7 +268,7 @@ export function buildDeterministicFallbackReply(
     };
   }
   return {
-    answer: `Thursday is flagged high risk because expected attendance is ${state.forecast.expectedAttendance} (${state.forecast.intervalLow}–${state.forecast.intervalHigh}), recommended preparation is ${state.forecast.recommendedPrep}, preventable surplus is ${state.forecast.preventableSurplus}, shortage probability is ${formatPct(baselineShortage)}, and risk remains ${state.forecast.risk}.`,
+    answer: `Today is flagged high risk because expected attendance is ${state.forecast.expectedAttendance} (${state.forecast.intervalLow}–${state.forecast.intervalHigh}), recommended preparation is ${state.forecast.recommendedPrep}, preventable surplus is ${state.forecast.preventableSurplus}, shortage probability is ${formatPct(baselineShortage)}, and risk remains ${state.forecast.risk}.`,
     answerType: "EXPLANATION",
     evidence: [
       {

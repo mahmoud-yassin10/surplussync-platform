@@ -273,7 +273,7 @@ function CommandCenter() {
           >
             <div className="p-4 text-[12.5px] text-[var(--color-text-soft)] leading-relaxed">
               <p>
-                Reducing Thursday preparation from{" "}
+                Reducing today's preparation from{" "}
                 <span className="text-[var(--color-text)] tnum">
                   {view.baselinePrep} → {view.recommendedPrep}
                 </span>{" "}
@@ -420,30 +420,42 @@ function PlanComparison({
   const pct = (v: number) => `${((v - min) / (max - min)) * 100}%`;
   return (
     <div>
-      <div className="relative h-14">
-        <div className="absolute inset-y-6 left-0 right-0 h-2 rounded-full bg-[var(--color-line)]" />
-        <div
-          className="grow-x absolute inset-y-6 h-2 rounded-full bg-[var(--color-ai-soft)]"
-          style={{ left: pct(low), width: `calc(${pct(high)} - ${pct(low)})` }}
-        />
+      <div className="relative h-28 rounded-md bg-[var(--color-surface-2)]/45 px-2 pt-5">
+        <div className="absolute left-5 right-5 top-0 h-full">
+          <div className="absolute left-0 right-0 top-[54px] h-3 rounded-full bg-[var(--color-line)]" />
+          <div
+            className="grow-x absolute top-[54px] h-3 rounded-full bg-[var(--color-ai)]/22 ring-1 ring-[var(--color-ai)]/25"
+            style={{ left: pct(low), width: `calc(${pct(high)} - ${pct(low)})` }}
+          />
+          <div
+            className="absolute top-[45px] h-8 w-px bg-[var(--color-text-faint)]/55"
+            style={{ left: pct(540) }}
+          />
 
-        <Marker pos={pct(expected)} color="var(--color-ai)" top label={`${expected} expected`} />
-        <Marker
-          pos={pct(current)}
-          color="var(--color-critical)"
-          bottom
-          label={`${current} current plan`}
-        />
-        <Marker
-          pos={pct(recommended)}
-          color="var(--color-success)"
-          bottom
-          label={`${recommended} recommended`}
-        />
+          <Marker pos={pct(expected)} color="var(--color-ai)" lane="top" label={`${expected} expected`} />
+          <Marker
+            pos={pct(recommended)}
+            color="var(--color-success)"
+            lane="middle"
+            label={`${recommended} recommended`}
+            emphasized
+          />
+          <Marker
+            pos={pct(current)}
+            color="var(--color-critical)"
+            lane="bottom"
+            label={`${current} current plan`}
+          />
+          <span
+            className="absolute top-[78px] -translate-x-1/2 rounded-full bg-white/85 px-2 py-0.5 text-[10px] text-[var(--color-text-soft)] shadow-sm tnum"
+            style={{ left: pct(540) }}
+          >
+            540 safety floor
+          </span>
+        </div>
       </div>
       <div className="mt-2 flex justify-between text-[10.5px] text-[var(--color-text-faint)] tnum">
         <span>{min}</span>
-        <span>540 safety floor</span>
         <span>{max}</span>
       </div>
       <div className="mt-3 flex items-start gap-2 text-[11.5px] text-[var(--color-text-soft)]">
@@ -461,27 +473,34 @@ function Marker({
   pos,
   color,
   label,
-  top,
-  bottom,
+  lane,
+  emphasized = false,
 }: {
   pos: string;
   color: string;
   label: string;
-  top?: boolean;
-  bottom?: boolean;
+  lane: "top" | "middle" | "bottom";
+  emphasized?: boolean;
 }) {
+  const labelTop = lane === "top" ? "10px" : lane === "middle" ? "74px" : "94px";
   return (
     <div
       className="absolute"
       style={{
         left: pos,
         transform: "translateX(-50%)",
-        top: top ? 0 : undefined,
-        bottom: bottom ? 0 : undefined,
       }}
     >
-      <div className="w-px h-7 mx-auto" style={{ background: color }} />
-      <div className="text-[10px] whitespace-nowrap tnum text-center" style={{ color }}>
+      <div
+        className={`absolute left-1/2 top-[41px] -translate-x-1/2 w-0.5 ${emphasized ? "h-9" : "h-8"} rounded-full`}
+        style={{ background: color }}
+      />
+      <div
+        className={`absolute left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-2 py-0.5 text-[10.5px] font-medium tnum shadow-sm ${
+          emphasized ? "bg-[var(--color-success-soft)] ring-1 ring-[var(--color-success)]/25" : "bg-white/90"
+        }`}
+        style={{ color, top: labelTop }}
+      >
         {label}
       </div>
     </div>

@@ -50,13 +50,13 @@ describe("guided demo workflow", () => {
     const final = runGuidedWorkflow();
     const view = forecastViewFromState(final);
     const horizon = syncHorizonFocusDay(HORIZON_DAYS, final.forecast, final.currentPlan);
-    const thursday = horizon.find((d) => d.date === "2026-03-12")!;
+    const focusDay = horizon.find((d) => d.date === "2026-06-22")!;
 
     expect(view.expectedAttendance).toBe(540);
     expect(view.recommendedPrep).toBe(575);
-    expect(thursday.attendance).toBe(540);
-    expect(thursday.recommendedPrep).toBe(575);
-    expect(view.focusDateLong).toBe("Thursday Mar 12, 2026");
+    expect(focusDay.attendance).toBe(540);
+    expect(focusDay.recommendedPrep).toBe(575);
+    expect(view.focusDateLong).toBe("Monday Jun 22, 2026");
 
     const copilot = buildCopilotReply("What happens if attendance is 540?", view);
     expect(copilot.body).toContain("575");
@@ -73,10 +73,10 @@ describe("guided demo workflow", () => {
   it("baseline surfaces agree before correction", () => {
     const view = forecastViewFromState(INITIAL);
     const horizon = syncHorizonFocusDay(HORIZON_DAYS, INITIAL.forecast, INITIAL.currentPlan);
-    const thursday = horizon.find((d) => d.date === "2026-03-12")!;
-    expect(view.expectedAttendance).toBe(thursday.attendance);
-    expect(view.recommendedPrep).toBe(thursday.recommendedPrep);
-    expect(view.preventableSurplus).toBe(thursday.preventable);
+    const focusDay = horizon.find((d) => d.date === "2026-06-22")!;
+    expect(view.expectedAttendance).toBe(focusDay.attendance);
+    expect(view.recommendedPrep).toBe(focusDay.recommendedPrep);
+    expect(view.preventableSurplus).toBe(focusDay.preventable);
   });
 
   it("provisional reserve works before surplus confirmation", () => {

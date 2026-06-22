@@ -33,9 +33,9 @@ describe("forecast", () => {
 
   it("builds deterministic recommendation keys", () => {
     const key = buildRecommendationKey(FORECAST_THURSDAY);
-    expect(key).toBe("2026-03-12|ssp-forecast-1.0|528|562");
+    expect(key).toBe("2026-06-22|ssp-forecast-1.0|528|562");
     const corrected = applyAttendanceCorrection(FORECAST_THURSDAY);
-    expect(buildRecommendationKey(corrected)).toBe("2026-03-12|ssp-forecast-1.0|540|575");
+    expect(buildRecommendationKey(corrected)).toBe("2026-06-22|ssp-forecast-1.0|540|575");
   });
 
   it("baseline and corrected views differ but are internally consistent", () => {
@@ -57,8 +57,8 @@ describe("forecast", () => {
     expect(corrected.expectedAttendance).toBe(540);
     expect(baseline.recommendedPrep).toBe(562);
     expect(corrected.recommendedPrep).toBe(575);
-    expect(baseline.focusDateLong).toBe("Thursday Mar 12, 2026");
-    expect(corrected.focusDateLong).toBe("Thursday Mar 12, 2026");
+    expect(baseline.focusDateLong).toBe("Monday Jun 22, 2026");
+    expect(corrected.focusDateLong).toBe("Monday Jun 22, 2026");
     expect(baseline.recommendationKey).not.toBe(corrected.recommendationKey);
 
     const sspBaseline = baseline.scenarioRows.find((r) => r.id === "ssp")!;
@@ -73,10 +73,10 @@ describe("forecast", () => {
   it("syncs horizon focus day from live forecast", () => {
     const corrected = applyAttendanceCorrection(FORECAST_THURSDAY);
     const synced = syncHorizonFocusDay(HORIZON_DAYS, corrected, 730);
-    const thursday = synced.find((d) => d.date === "2026-03-12")!;
-    expect(thursday.attendance).toBe(540);
-    expect(thursday.recommendedPrep).toBe(575);
-    expect(thursday.preventable).toBe(155);
+    const focusDay = synced.find((d) => d.date === "2026-06-22")!;
+    expect(focusDay.attendance).toBe(540);
+    expect(focusDay.recommendedPrep).toBe(575);
+    expect(focusDay.preventable).toBe(155);
   });
 
   it("forecastViewFromState matches store baseline", () => {
