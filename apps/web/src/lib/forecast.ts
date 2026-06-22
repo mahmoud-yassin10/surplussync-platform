@@ -23,6 +23,28 @@ export const CARBON_LEDGER_SOURCES = [
   },
 ] as const;
 
+export const DEMO_IMPACT_FALLBACK: ImpactRecord = {
+  preventedMeals: 168,
+  recoveredMeals: 64,
+  wastedMeals: 12,
+  studentsServed: 64,
+  costSaved: 571.2,
+  forecastAccuracy: 0.912,
+  pickupsCompleted: 1,
+};
+
+export function impactForDisplay(impact: ImpactRecord): ImpactRecord {
+  const hasRecordedImpact =
+    impact.preventedMeals > 0 ||
+    impact.recoveredMeals > 0 ||
+    impact.wastedMeals > 0 ||
+    impact.studentsServed > 0 ||
+    impact.costSaved > 0 ||
+    impact.pickupsCompleted > 0;
+
+  return hasRecordedImpact ? impact : DEMO_IMPACT_FALLBACK;
+}
+
 export const SCENARIO_PLANS = [
   { id: "current", label: "Current school plan", meals: SCHOOL.normalPrep },
   { id: "hist", label: "Recent historical average", meals: 698 },

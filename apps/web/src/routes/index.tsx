@@ -5,7 +5,7 @@ import { CountUp, SkeletonStat, SkeletonText } from "../components/shell/motion"
 import { HorizonRibbon } from "../components/forecast/HorizonRibbon";
 import { EvidenceTrigger } from "../components/forecast/EvidenceDrawer";
 import { useStore } from "../lib/store";
-import { forecastViewFromState, syncHorizonFocusDay } from "../lib/forecast";
+import { forecastViewFromState, impactForDisplay, syncHorizonFocusDay } from "../lib/forecast";
 import { HORIZON_DAYS } from "../lib/mock";
 import { canPerform } from "../lib/permissions";
 
@@ -27,6 +27,7 @@ function CommandCenter() {
   const view = forecastViewFromState(state);
   const f = state.forecast;
   const horizon = syncHorizonFocusDay(HORIZON_DAYS, f, state.currentPlan);
+  const impact = impactForDisplay(state.impact);
   const loading = state.forecastLoadStatus === "loading";
 
   if (loading) {
@@ -314,25 +315,25 @@ function CommandCenter() {
             <div className="p-4 grid grid-cols-2 gap-3 stagger-fast">
               <Ledger
                 label="Prevented"
-                value={state.impact.preventedMeals}
+                value={impact.preventedMeals}
                 tone="ai"
                 sub="meals not prepared"
               />
               <Ledger
                 label="Recovered"
-                value={state.impact.recoveredMeals}
+                value={impact.recoveredMeals}
                 tone="success"
                 sub="safe untouched"
               />
               <Ledger
                 label="Nonrecoverable"
-                value={state.impact.wastedMeals}
+                value={impact.wastedMeals}
                 tone="critical"
                 sub="cannot redistribute"
               />
               <Ledger
                 label="Cost saved"
-                value={`$${Math.round(state.impact.costSaved)}`}
+                value={`$${Math.round(impact.costSaved)}`}
                 sub="procurement avoided"
               />
             </div>

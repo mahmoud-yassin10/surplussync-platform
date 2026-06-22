@@ -8,6 +8,7 @@ import {
   CARBON_LEDGER_SOURCES,
   estimateCarbonLedger,
   forecastViewFromState,
+  impactForDisplay,
   impactCategoryDisclosures,
   preventedMealsDerivation,
 } from "../lib/forecast";
@@ -19,7 +20,7 @@ export const Route = createFileRoute("/impact")({
 
 function Impact() {
   const { state } = useStore();
-  const i = state.impact;
+  const i = impactForDisplay(state.impact);
   const view = forecastViewFromState(state);
   const carbon = estimateCarbonLedger(i);
 
