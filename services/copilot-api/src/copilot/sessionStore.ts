@@ -57,6 +57,8 @@ interface LabSession extends SessionSnapshot {
 
 const sessions = new Map<string, LabSession>();
 
+export type PersistedLabSession = LabSession;
+
 export const DEFAULT_PARTNER_PREREQUISITES: PartnerPrerequisites = {
   surplusConfirmed: false,
   surplusMeals: null,
@@ -101,6 +103,20 @@ export function getSession(sessionId: string): LabSession | undefined {
 export function getSessionState(sessionId: string): SessionSnapshot | null {
   const session = sessions.get(sessionId);
   return session ? toSnapshot(session) : null;
+}
+
+export function getPersistedSession(sessionId: string): PersistedLabSession | null {
+  const session = sessions.get(sessionId);
+  return session ? structuredClone(session) : null;
+}
+
+export function hydratePersistedSession(session: PersistedLabSession): SessionSnapshot {
+  sessions.set(session.sessionId, structuredClone(session));
+  return toSnapshot(sessions.get(session.sessionId)!);
+}
+
+export function removeSessionFromMemoryForTest(sessionId: string): boolean {
+  return sessions.delete(sessionId);
 }
 
 export function getKnownPartnerIds(sessionId?: string): string[] {

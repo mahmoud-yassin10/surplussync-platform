@@ -17,10 +17,13 @@ import {
   createSession,
   deleteIntegrationSession,
   getKnownPartnerIds,
+  getPersistedSession,
   getSessionState,
+  hydratePersistedSession,
   rejectProposal,
   updateSessionRole,
 } from "../copilot/sessionStore";
+import { resolveSessionPersistence, SessionPersistence } from "../copilot/sessionPersistence";
 import { authorizeMainAppService } from "../copilot/integrationAuth";
 import { reconcileSessionFromMainApp } from "../copilot/reconcileSessionFromMainApp";
 import { validateReconciliationRequest } from "../copilot/reconciliationSchemas";
@@ -37,6 +40,7 @@ export interface LabAppOptions {
   testGeminiSteps?: Array<{ functionCalls?: FunctionCall[]; text?: string }>;
   /** Server-only integration token override for tests. */
   mainAppServiceToken?: string | null;
+  sessionPersistence?: SessionPersistence;
 }
 
 function resolveGeminiClient(options: LabAppOptions): GoogleGenAI | null {
@@ -88,6 +92,24 @@ export function createLabApp(options: LabAppOptions = {}): Express {
     options.mainAppServiceToken !== undefined
       ? options.mainAppServiceToken
       : process.env.MAIN_APP_SERVICE_TOKEN ?? null;
+  const sessionPersistence = options.sessionPersistence ?? resolveSessionPersistence();
+
+  async function hydrateSession(sessionId: string): Promise<void> {
+    if (getSessionState(sessionId)) return;
+    const persisted = await sessionPersistence.load(sessionId);
+    if (persisted) hydratePersistedSession(persisted);
+  }
+
+  async function persistSession(sessionId: string): Promise<void> {
+    const session = getPersistedSession(sessionId);
+    if (session) await sessionPersistence.save(session);
+  }
+
+  async function deleteSession(sessionId: string): Promise<boolean> {
+    const deleted = deleteIntegrationSession(sessionId);
+    await sessionPersistence.delete(sessionId);
+    return deleted;
+  }
 
   function requireMainAppAuth(req: Request, res: Response): boolean {
     const auth = authorizeMainAppService(req.get("authorization"), integrationToken);
@@ -98,8 +120,19 @@ export function createLabApp(options: LabAppOptions = {}): Express {
     return true;
   }
 
-  app.post("/api/integration/session/:sessionId/reconcile", (req: Request, res: Response) => {
+  app.get("/health", (_req: Request, res: Response) => {
+    res.status(200).json({
+      status: "ok",
+      service: "surplussync-copilot-api",
+      geminiAvailable: !!ai,
+      forecastSourceConfigured: !!process.env.ML_SERVICE_URL?.trim(),
+      sessionPersistence: sessionPersistence.mode,
+    });
+  });
+
+  app.post("/api/integration/session/:sessionId/reconcile", async (req: Request, res: Response) => {
     if (!requireMainAppAuth(req, res)) return;
+    await hydrateSession(req.params.sessionId);
 
     const validation = validateReconciliationRequest(
       req.body,
@@ -121,12 +154,14 @@ export function createLabApp(options: LabAppOptions = {}): Express {
       changed: result.changed,
       idempotent: result.idempotent,
     });
+    await persistSession(req.params.sessionId);
   });
 
-  app.delete("/api/integration/session/:sessionId", (req: Request, res: Response) => {
+  app.delete("/api/integration/session/:sessionId", async (req: Request, res: Response) => {
     if (!requireMainAppAuth(req, res)) return;
 
-    const deleted = deleteIntegrationSession(req.params.sessionId);
+    await hydrateSession(req.params.sessionId);
+    const deleted = await deleteSession(req.params.sessionId);
     if (!deleted) {
       res.status(404).json({ error: "Session not found" });
       return;
@@ -135,7 +170,7 @@ export function createLabApp(options: LabAppOptions = {}): Express {
     res.status(204).send();
   });
 
-  app.post("/api/session", (req: Request, res: Response) => {
+  app.post("/api/session", async (req: Request, res: Response) => {
     const parsed = CreateSessionRequestSchema.safeParse(req.body ?? {});
     if (!parsed.success) {
       res.status(400).json({ error: "Invalid session creation payload" });
@@ -148,9 +183,11 @@ export function createLabApp(options: LabAppOptions = {}): Express {
       state,
       notice: "Demo session isolation only — not production authentication.",
     });
+    await persistSession(state.sessionId);
   });
 
-  app.get("/api/session/:sessionId/state", (req: Request, res: Response) => {
+  app.get("/api/session/:sessionId/state", async (req: Request, res: Response) => {
+    await hydrateSession(req.params.sessionId);
     const state = getSessionState(req.params.sessionId);
     if (!state) {
       res.status(404).json({ error: "Session not found" });
@@ -159,26 +196,29 @@ export function createLabApp(options: LabAppOptions = {}): Express {
     res.json({ state });
   });
 
-  app.patch("/api/session/:sessionId/role", (req: Request, res: Response) => {
+  app.patch("/api/session/:sessionId/role", async (req: Request, res: Response) => {
     const parsed = UpdateSessionRoleSchema.safeParse(req.body);
     if (!parsed.success) {
       res.status(400).json({ error: "Invalid role payload" });
       return;
     }
+    await hydrateSession(req.params.sessionId);
     const state = updateSessionRole(req.params.sessionId, parsed.data.role as UserRole);
     if (!state) {
       res.status(404).json({ error: "Session not found" });
       return;
     }
     res.json({ state });
+    await persistSession(req.params.sessionId);
   });
 
-  app.post("/api/session/:sessionId/audit/amendment", (req: Request, res: Response) => {
+  app.post("/api/session/:sessionId/audit/amendment", async (req: Request, res: Response) => {
     const parsed = AuditAmendmentRequestSchema.safeParse(req.body);
     if (!parsed.success) {
       res.status(400).json({ error: "Invalid audit amendment payload" });
       return;
     }
+    await hydrateSession(req.params.sessionId);
     const result = appendAuditAmendment(
       req.params.sessionId,
       parsed.data.reason,
@@ -189,38 +229,45 @@ export function createLabApp(options: LabAppOptions = {}): Express {
       return;
     }
     res.status(201).json({ state: result.state, amendment: result.amendment });
+    await persistSession(req.params.sessionId);
   });
 
-  app.post("/api/session/:sessionId/proposals/partner-selection", (req: Request, res: Response) => {
+  app.post("/api/session/:sessionId/proposals/partner-selection", async (req: Request, res: Response) => {
     const parsed = PartnerSelectionRequestSchema.safeParse(req.body);
     if (!parsed.success) {
       res.status(400).json({ error: "Invalid partner selection payload" });
       return;
     }
+    await hydrateSession(req.params.sessionId);
     const result = createPartnerSelectionProposal(req.params.sessionId, parsed.data.partnerId);
     if (!result.ok) {
       res.status(result.statusCode).json({ error: result.error });
       return;
     }
     res.status(result.statusCode).json({ state: result.state, proposals: result.proposals });
+    await persistSession(req.params.sessionId);
   });
 
-  app.post("/api/session/:sessionId/proposals/:proposalId/approve", (req: Request, res: Response) => {
+  app.post("/api/session/:sessionId/proposals/:proposalId/approve", async (req: Request, res: Response) => {
+    await hydrateSession(req.params.sessionId);
     const result = approveProposal(req.params.sessionId, req.params.proposalId);
     if (!result.ok) {
       res.status(result.statusCode).json({ error: result.error });
       return;
     }
     res.json({ state: result.state });
+    await persistSession(req.params.sessionId);
   });
 
-  app.post("/api/session/:sessionId/proposals/:proposalId/reject", (req: Request, res: Response) => {
+  app.post("/api/session/:sessionId/proposals/:proposalId/reject", async (req: Request, res: Response) => {
+    await hydrateSession(req.params.sessionId);
     const result = rejectProposal(req.params.sessionId, req.params.proposalId);
     if (!result.ok) {
       res.status(result.statusCode).json({ error: result.error });
       return;
     }
     res.json({ state: result.state });
+    await persistSession(req.params.sessionId);
   });
 
   app.post("/api/copilot", async (req: Request, res: Response) => {
@@ -232,6 +279,7 @@ export function createLabApp(options: LabAppOptions = {}): Express {
       }
 
       const { sessionId, message } = parsed.data;
+      await hydrateSession(sessionId);
       const session = getSessionState(sessionId);
       if (!session) {
         res.status(404).json({ error: "Session not found" });
@@ -265,6 +313,7 @@ export function createLabApp(options: LabAppOptions = {}): Express {
         rejectedProposals: turn.processed.rejectedProposals,
         warning: turn.warning,
       });
+      await persistSession(sessionId);
     } catch (error: unknown) {
       console.error("Copilot execution failed:", error);
       const sessionId = req.body?.sessionId;
@@ -290,6 +339,7 @@ export function createLabApp(options: LabAppOptions = {}): Express {
         warning: "Server error encountered. Safely resolved via deterministic tool-loop fallback.",
         rejectedProposals: fallback.processed.rejectedProposals,
       });
+      if (typeof sessionId === "string") await persistSession(sessionId);
     }
   });
 
@@ -301,6 +351,7 @@ export function createLabApp(options: LabAppOptions = {}): Express {
       isProduction,
       allowForceMock: !isProduction,
       sessionNotice: "Demo session isolation only — not production authentication.",
+      sessionPersistence: sessionPersistence.mode,
     });
   });
 
