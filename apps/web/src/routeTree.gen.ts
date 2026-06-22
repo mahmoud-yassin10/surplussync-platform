@@ -17,6 +17,7 @@ import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as MealsRouteImport } from './routes/meals'
 import { Route as ImpactRouteImport } from './routes/impact'
 import { Route as ForecastRouteImport } from './routes/forecast'
+import { Route as EvidenceRouteImport } from './routes/evidence'
 import { Route as DecisionRouteImport } from './routes/decision'
 import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as AuditRouteImport } from './routes/audit'
@@ -72,6 +73,11 @@ const ImpactRoute = ImpactRouteImport.update({
 const ForecastRoute = ForecastRouteImport.update({
   id: '/forecast',
   path: '/forecast',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EvidenceRoute = EvidenceRouteImport.update({
+  id: '/evidence',
+  path: '/evidence',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DecisionRoute = DecisionRouteImport.update({
@@ -164,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/audit': typeof AuditRoute
   '/calendar': typeof CalendarRoute
   '/decision': typeof DecisionRoute
+  '/evidence': typeof EvidenceRoute
   '/forecast': typeof ForecastRoute
   '/impact': typeof ImpactRoute
   '/meals': typeof MealsRoute
@@ -190,6 +197,7 @@ export interface FileRoutesByTo {
   '/audit': typeof AuditRoute
   '/calendar': typeof CalendarRoute
   '/decision': typeof DecisionRoute
+  '/evidence': typeof EvidenceRoute
   '/forecast': typeof ForecastRoute
   '/impact': typeof ImpactRoute
   '/meals': typeof MealsRoute
@@ -217,6 +225,7 @@ export interface FileRoutesById {
   '/audit': typeof AuditRoute
   '/calendar': typeof CalendarRoute
   '/decision': typeof DecisionRoute
+  '/evidence': typeof EvidenceRoute
   '/forecast': typeof ForecastRoute
   '/impact': typeof ImpactRoute
   '/meals': typeof MealsRoute
@@ -245,6 +254,7 @@ export interface FileRouteTypes {
     | '/audit'
     | '/calendar'
     | '/decision'
+    | '/evidence'
     | '/forecast'
     | '/impact'
     | '/meals'
@@ -271,6 +281,7 @@ export interface FileRouteTypes {
     | '/audit'
     | '/calendar'
     | '/decision'
+    | '/evidence'
     | '/forecast'
     | '/impact'
     | '/meals'
@@ -297,6 +308,7 @@ export interface FileRouteTypes {
     | '/audit'
     | '/calendar'
     | '/decision'
+    | '/evidence'
     | '/forecast'
     | '/impact'
     | '/meals'
@@ -324,6 +336,7 @@ export interface RootRouteChildren {
   AuditRoute: typeof AuditRoute
   CalendarRoute: typeof CalendarRoute
   DecisionRoute: typeof DecisionRoute
+  EvidenceRoute: typeof EvidenceRoute
   ForecastRoute: typeof ForecastRoute
   ImpactRoute: typeof ImpactRoute
   MealsRoute: typeof MealsRoute
@@ -398,6 +411,13 @@ declare module '@tanstack/react-router' {
       path: '/forecast'
       fullPath: '/forecast'
       preLoaderRoute: typeof ForecastRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/evidence': {
+      id: '/evidence'
+      path: '/evidence'
+      fullPath: '/evidence'
+      preLoaderRoute: typeof EvidenceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/decision': {
@@ -536,6 +556,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuditRoute: AuditRoute,
   CalendarRoute: CalendarRoute,
   DecisionRoute: DecisionRoute,
+  EvidenceRoute: EvidenceRoute,
   ForecastRoute: ForecastRoute,
   ImpactRoute: ImpactRoute,
   MealsRoute: MealsRoute,

@@ -19,7 +19,6 @@ import {
   onCopilotReset,
   rejectCopilotProposal,
   sendCopilotMessage,
-  type CopilotClientError,
 } from "../../lib/copilot-client";
 import { buildReconciliationSnapshot } from "../../lib/copilot-snapshot";
 import { useStore } from "../../lib/store";
@@ -113,26 +112,24 @@ export function CopilotDrawer({ open, onClose }: { open: boolean; onClose: () =>
           },
         });
       } catch (error) {
-        const clientError = error as CopilotClientError;
-        if (clientError.code === "COPILOT_UNAVAILABLE" || clientError.status >= 500) {
-          const fallback = buildDeterministicFallbackReply(prompt, state);
-          setThread((t) => [
-            ...t,
-            {
-              question: prompt,
-              response: {
-                response: fallback,
-                mode: "MOCK_FALLBACK",
-                mlSource: "canonical-fallback",
-              },
-              error: clientError.message,
-              proposals: [],
+        const detail = error instanceof Error ? error.message : undefined;
+        const fallback = buildDeterministicFallbackReply(prompt, state);
+        setThread((t) => [
+          ...t,
+          {
+            question: prompt,
+            response: {
+              response: fallback,
+              mode: "MOCK_FALLBACK",
+              mlSource: "canonical-fallback",
             },
-          ]);
-          setInput("");
-        } else {
-          setLastFailedPrompt(prompt);
-        }
+            error: detail
+              ? `Live Copilot is not connected yet (${detail}). Using the local demo fallback.`
+              : "Live Copilot is not connected yet. Using the local demo fallback.",
+            proposals: [],
+          },
+        ]);
+        setInput("");
       } finally {
         setLoading(false);
         sendInFlight.current = false;

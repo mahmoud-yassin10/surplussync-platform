@@ -21,13 +21,16 @@ export function HorizonRibbon({
   onSelectDate,
   selected,
   horizonDays = HORIZON_DAYS,
+  variant = "default",
 }: {
   onSelectDate?: (d: string) => void;
   selected?: string;
   horizonDays?: HorizonDay[];
+  variant?: "default" | "compact";
 }) {
+  const compact = variant === "compact";
   return (
-    <div className="px-4 py-4">
+    <div className={compact ? "px-4 py-4" : "px-4 py-4"}>
       <div className="flex items-end justify-between mb-3 gap-3">
         <div>
           <div className="text-[10.5px] uppercase tracking-[0.16em] text-[var(--color-text-faint)]">
@@ -44,7 +47,7 @@ export function HorizonRibbon({
         </div>
       </div>
 
-      <div className="grid grid-cols-5 md:grid-cols-10 gap-1.5">
+      <div className={`grid gap-1.5 ${compact ? "grid-cols-5" : "grid-cols-5 md:grid-cols-10"}`}>
         {horizonDays.map((d) => {
           const isFocus = d.risk === "high";
           const isSelected = selected === d.date;
@@ -81,10 +84,14 @@ export function HorizonRibbon({
                 )}
               </div>
 
-              <div className="mt-2 flex items-end gap-1 h-[56px]">
+              <div className={`mt-2 flex items-end gap-1 ${compact ? "h-[46px]" : "h-[56px]"}`}>
                 <div
                   className="flex-1 rounded-sm"
-                  style={{ height: barH, background: color, opacity: 0.85 }}
+                  style={{
+                    height: compact ? Math.min(46, barH) : barH,
+                    background: color,
+                    opacity: 0.85,
+                  }}
                 />
               </div>
 
